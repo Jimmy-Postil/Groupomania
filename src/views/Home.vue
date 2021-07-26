@@ -1,18 +1,23 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img
+      class="img-groupomania"
+      src="../assets/icon-left-font.png"
+      alt="logo groupomania"
+    />
+    <div class="login">
+      <input type="text" placeholder="Adresse e-mail" />
+      <input type="text" placeholder="Mot de passe" />
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
 </script>
+
+<style scoped>
+.img-groupomania {
+  display: flex;
+  margin-left: 50px;
+}
+</style>
