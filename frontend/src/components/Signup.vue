@@ -1,30 +1,68 @@
 <template>
-  <div class="home">
-    <img
-      class="img-groupomania"
-      src="../assets/icon-above-font.png"
-      alt="logo groupomania"
+  <div class="login">
+    <h2 class="login-title">Bienvenue sur Groupomania</h2>
+    <h3 class="login-title--signup">Inscrivez-vous</h3>
+    <input type="text" placeholder="Pseudo" />
+    <input type="text" placeholder="Adresse e-mail" />
+    <input type="password" placeholder="Mot de passe" />
+    <input
+      type="submit"
+      class="login-title--signup_connected"
+      value="Inscription"
+      @click="signUpUser"
     />
-    <div class="login">
-      <h2 class="login-title">Bienvenue sur Groupomania</h2>
-      <h3 class="login-title--signup">Inscrivez-vous</h3>
-      <input type="text" placeholder="Pseudo" />
-      <input type="text" placeholder="Adresse e-mail" />
-      <input type="password" placeholder="Mot de passe" />
-      <input
-        type="button"
-        class="login-title--signup_connected"
-        value="Inscription"
-      />
-      <p class="login-title--signup_connected__account">
-        Vous avez déjà un compte?
-        <router-link to="/login" class="login-title--signup_connected__account__link">Connectez-vous</router-link>
-      </p>
-    </div>
+    <p class="login-title--signup_connected__account">
+      Vous avez déjà un compte?
+      <router-link
+        to="/login"
+        class="login-title--signup_connected__account__link"
+        >Connectez-vous</router-link
+      >
+    </p>
   </div>
 </template>
 
 <script>
+export default {
+  name: "Signup",
+  data() {
+    return {
+      email: "",
+      username: "",
+      password: "",
+    };
+  },
+  methods: {
+    signUpUser() {
+      let data = JSON.stringify({
+        email: this.email,
+        pseudo: this.pseudo,
+        password: this.password,
+      });
+      async function signUp(data) {
+        try {
+          let response = await fetch("http://localhost:3000/api/auth/signup", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: data,
+          });
+          if (response.ok) {
+            let responseId = await response.json();
+            console.log(responseId);
+          } else {
+            console.error("Retour du serveur : ", response.status);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      signUp(data);
+      window.location.href = "http://localhost:8080/signup#/login";
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

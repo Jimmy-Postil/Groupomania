@@ -1,52 +1,36 @@
 <template>
-  <div class="home">
-    <img
-      class="img-groupomania"
-      src="../assets/icon-above-font.png"
-      alt="logo groupomania"
+  <div class="login">
+    <h2 class="login-title">Bienvenue sur Groupomania</h2>
+    <h3 class="login-title--login">Connectez-vous</h3>
+    <input type="text" placeholder="Adresse e-mail" />
+    <input type="password" placeholder="Mot de passe" />
+    <input
+      type="button"
+      class="login-title--login_connected"
+      value="Se connecter"
     />
-    <div class="login">
-      <h2 class="login-title">Bienvenue sur Groupomania</h2>
-      <h3 class="login-title--login">Connectez-vous</h3>
-      <input type="text" placeholder="Adresse e-mail" />
-      <input type="password" placeholder="Mot de passe" />
-      <input
-        type="button"
-        class="login-title--login_connected"
-        value="Se connecter"
-      />
-      <p class="login-title--login_connected__noaccount">
-        Pas de compte?
-        <router-link
-          to="/signup"
-          class="login-title--login_connected__noaccount__link"
-          >Inscrivez-vous</router-link
-        >
-      </p>
-    </div>
+    <p class="login-title--login_connected__noaccount">
+      Pas de compte?
+      <router-link
+        to="/signup"
+        class="login-title--login_connected__noaccount__link"
+        >Inscrivez-vous</router-link
+      >
+    </p>
   </div>
 </template>
 
 <script>
+export default {
+  name: "Login",
+};
 </script>
 
 <style lang="scss" scoped>
-.home {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.img-groupomania {
-  width: 30%;
-}
-
 .login {
   display: flex;
   flex-direction: column;
   margin-top: 20px;
-  width: 350px;
   padding: 20px;
   background-color: white;
   box-shadow: 3px 3px 10px rgb(151, 150, 150);
@@ -85,9 +69,6 @@ input {
 }
 
 @media all and (max-width: 768px) {
-  .img-groupomania {
-    width: 80%;
-  }
 
   .login {
     width: 80%;

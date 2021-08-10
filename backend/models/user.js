@@ -19,14 +19,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             validate: {
                 notEmpty: true,
-            },      
+            },
         },
         isAdmin: {
             type: DataTypes.BOOLEAN,
-            allowNull: false,
-            validate: {
-                notEmpty: true,
-            },
         },
     })
     return User;
