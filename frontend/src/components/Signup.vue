@@ -33,32 +33,32 @@ export default {
     };
   },
   methods: {
-    signUpUser() {
-      let data = JSON.stringify({
+    signupUser() {
+      let dataSignup = JSON.stringify({
         email: this.email,
         pseudo: this.pseudo,
         password: this.password,
       });
-      async function signUp(data) {
+      async function signup(dataSignup) {
         try {
           let response = await fetch("http://localhost:3000/api/auth/signup", {
             method: "POST",
             headers: {
               "content-type": "application/json",
             },
-            body: data,
+            body: dataSignup,
           });
           if (response.ok) {
             let responseId = await response.json();
             console.log(responseId);
           } else {
-            console.error("Retour du serveur : ", response.status);
+            console.error("Retour du serveur : " + response.status);
           }
         } catch (error) {
           console.log(error);
         }
       }
-      signUp(data);
+      signup(dataSignup);
       window.location.href = "http://localhost:8080/signup#/login";
     },
   },

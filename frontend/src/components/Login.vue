@@ -8,6 +8,7 @@
       type="button"
       class="login-title--login_connected"
       value="Se connecter"
+      v-on:click="userLogin"
     />
     <p class="login-title--login_connected__noaccount">
       Pas de compte?
@@ -23,6 +24,44 @@
 <script>
 export default {
   name: "Login",
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    userLogin() {
+      let dataLogin = JSON.stringify({
+        email: this.email,
+        password: this.password,
+      });
+      async function sendLogin(dataSend) {
+        try {
+          let response = await fetch("https://localhost:3000/api/auth/login", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: dataSend,
+          });
+          if (response.ok) {
+            let responseData = await response.json();
+            localStorage.setItem("Id", responseData.userId);
+            localStorage.setItem("email", responseData.email);
+            localStorage.setItem("password", responseData.password);
+            localStorage.setItem("isAdmin", responseData.isAdmin);
+          } else {
+            console.error("Retour du serveur : " + response.status);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      sendLogin(dataLogin);
+      window.location.href = "http://localhost:8080/signup#/userwall";
+    },
+  },
 };
 </script>
 
@@ -69,7 +108,6 @@ input {
 }
 
 @media all and (max-width: 768px) {
-
   .login {
     width: 80%;
   }
