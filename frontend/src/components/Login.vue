@@ -2,8 +2,8 @@
   <div class="login">
     <h2 class="login-title">Bienvenue sur Groupomania</h2>
     <h3 class="login-title--login">Connectez-vous</h3>
-    <input type="text" placeholder="Adresse e-mail" />
-    <input type="password" placeholder="Mot de passe" />
+    <input type="text" placeholder="Adresse e-mail" v-model="email" />
+    <input type="password" placeholder="Mot de passe" v-model="password" />
     <input
       type="button"
       class="login-title--login_connected"
@@ -36,9 +36,10 @@ export default {
         email: this.email,
         password: this.password,
       });
+      const router = this.$router;
       async function sendLogin(dataSend) {
         try {
-          let response = await fetch("https://localhost:3000/api/auth/login", {
+          let response = await fetch("http://localhost:3000/api/auth/login", {
             method: "POST",
             headers: {
               "content-type": "application/json",
@@ -49,8 +50,8 @@ export default {
             let responseData = await response.json();
             localStorage.setItem("Id", responseData.userId);
             localStorage.setItem("email", responseData.email);
-            localStorage.setItem("password", responseData.password);
             localStorage.setItem("isAdmin", responseData.isAdmin);
+            router.push({ name: "UserWall" });
           } else {
             console.error("Retour du serveur : " + response.status);
           }
@@ -59,7 +60,6 @@ export default {
         }
       }
       sendLogin(dataLogin);
-      window.location.href = "http://localhost:8080/signup#/userwall";
     },
   },
 };

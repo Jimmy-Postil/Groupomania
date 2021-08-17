@@ -1,30 +1,16 @@
 <template>
-    <header>
-        <div class="container">
-            <div class="row">
-                <nav class="col navbar navbar-expand-lg navbar-light">
-                    <a class="navbar-brand" href=""><img class="img-groupomania" src="../assets/icon-left-font.png"
-                            alt="Logo Groupomania"></a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div id="navbarContent" class="collapse navbar-collapse">
-                        <ul class="navbar-nav">
-                            <li class="nav-item active">
-                                <a class="nav-link text-primary" href="index.html">Accueil</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href=""><i
-                                        class=""></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
+  <div class="home">
+    <div class="header">
+      <img
+        class="img-groupomania"
+        src="../assets/icon-left-font.png"
+        alt="logo Groupomania"
+      />
+      <h3 class="header-profil">Profil</h3>
+    </div>
+    <div class="separator"></div>
     <Post />
+  </div>
 </template>
 
 <script>
@@ -40,7 +26,33 @@ export default {
 
 <style lang="scss" scoped>
 
-.img-groupomania{
-  width: 80%;
+.img-groupomania {
+  width: 20%;
+  margin-top: 10px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  &-profil {
+    margin-top: 30px;
+    margin-right: 20px;
+  }
+}
+.separator {
+  border: 1px solid grey;
+  margin-top: 20px;
+}
+
+@media all and (max-width: 768px) {
+  .img-groupomania {
+    width: 50%;
+  }
+}
+
+@media all and (max-width: 450px) {
+  .img-groupomania {
+    width: 60%;
+  }
 }
 </style>

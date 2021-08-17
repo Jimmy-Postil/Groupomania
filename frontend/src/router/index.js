@@ -20,7 +20,6 @@ const routes = [
     component: UserWall
   }
 ]
-
 const router = createRouter({
   history: createWebHashHistory(),
   routes

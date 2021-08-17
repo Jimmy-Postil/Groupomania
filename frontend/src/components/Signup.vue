@@ -2,14 +2,14 @@
   <div class="login">
     <h2 class="login-title">Bienvenue sur Groupomania</h2>
     <h3 class="login-title--signup">Inscrivez-vous</h3>
-    <input type="text" placeholder="Pseudo" />
-    <input type="text" placeholder="Adresse e-mail" />
-    <input type="password" placeholder="Mot de passe" />
+    <input type="text" placeholder="Pseudo" v-model="pseudo" />
+    <input type="text" placeholder="Adresse e-mail" v-model="email" />
+    <input type="password" placeholder="Mot de passe" v-model="password" />
     <input
       type="submit"
       class="login-title--signup_connected"
       value="Inscription"
-      @click="signUpUser"
+      @click="signupUser"
     />
     <p class="login-title--signup_connected__account">
       Vous avez déjà un compte?
@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       email: "",
-      username: "",
+      pseudo: "",
       password: "",
     };
   },
@@ -39,6 +39,7 @@ export default {
         pseudo: this.pseudo,
         password: this.password,
       });
+      const router = this.$router;
       async function signup(dataSignup) {
         try {
           let response = await fetch("http://localhost:3000/api/auth/signup", {
@@ -50,7 +51,8 @@ export default {
           });
           if (response.ok) {
             let responseId = await response.json();
-            console.log(responseId);
+            console.log(responseId)
+            router.push({ name: "Login" });
           } else {
             console.error("Retour du serveur : " + response.status);
           }
@@ -59,7 +61,6 @@ export default {
         }
       }
       signup(dataSignup);
-      window.location.href = "http://localhost:8080/signup#/login";
     },
   },
 };

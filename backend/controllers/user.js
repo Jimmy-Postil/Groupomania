@@ -34,7 +34,7 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
     //Recherche de l'utilisateur dans la base de données
     const email = req.body.email;
-    User.findOne({ where: { email: email} })
+    User.findOne({ where: { email: email } })
         .then(user => {
             //Si l'utilisateur n'est pas trouvé
             if (!user) {
@@ -49,7 +49,8 @@ exports.login = (req, res, next) => {
                     //Si le mot de passe est le même on crée un token pour sécuriser le compte de l'utilisateur
                     res.status(200).json({
                         userId: user.id,
-                        userAdmin: user.isAdmin,
+                        isAdmin: user.isAdmin,
+                        email: email,
                         token: jwt.sign(
                             { userId: user.id },
                             'RANDOM TOKEN SECRET',
