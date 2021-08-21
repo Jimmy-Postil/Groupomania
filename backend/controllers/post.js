@@ -9,18 +9,18 @@ exports.getAllPost = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 }
 
-exports.createPost = (req, res, next) => {
+exports.addPost = (req, res, next) => {
     const userId = req.body.userId;
     const content = req.body.content;
-
+    const postFile = req.body.image;
     if (content === null) {
         return res.status(400).json({ 'error': 'Impossible de publier un contenu vide' })
     }
 
-    const newPost = Post.create({
+    const newPost = new Post({
         userId: userId,
         content: content,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        image: postFile !== '' ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null
     })
 
     newPost.save()
@@ -39,9 +39,9 @@ exports.modifyPost = (req, res, next) => {
         userId: req.body.userId
     };
 
-        Post.update({ where: { id: id } })
-            .then(() => res.status(200).json({ message: 'Post modifié' }))
-            .catch(error => res.status(400).json({ error }));
+    Post.update({ where: { id: id } })
+        .then(() => res.status(200).json({ message: 'Post modifié' }))
+        .catch(error => res.status(400).json({ error }));
 
 }
 

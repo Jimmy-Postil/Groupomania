@@ -50,6 +50,7 @@ export default {
             let responseData = await response.json();
             localStorage.setItem("Id", responseData.userId);
             localStorage.setItem("email", responseData.email);
+            localStorage.setItem("token", responseData.token);
             localStorage.setItem("isAdmin", responseData.isAdmin);
             router.push({ name: "UserWall" });
           } else {

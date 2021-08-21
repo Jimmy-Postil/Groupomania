@@ -6,29 +6,29 @@
         src="../assets/icon-left-font.png"
         alt="logo Groupomania"
       />
-      <h3 class="header-profil">Profil</h3>
+      <a href="" class="header-profil"><h3>Profil</h3></a>
     </div>
     <div class="separator"></div>
-    <Post />
+    <CreatePost />
   </div>
 </template>
 
 <script>
-import Post from "../components/Post";
+import CreatePost from "../components/CreatePost";
 
 export default {
   name: "UserWall",
   components: {
-    Post,
+    CreatePost,
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
 .img-groupomania {
   width: 20%;
   margin-top: 10px;
+  margin-left: 20px;
 }
 
 .header {
@@ -37,6 +37,8 @@ export default {
   &-profil {
     margin-top: 30px;
     margin-right: 20px;
+    color: black;
+    text-decoration: none;
   }
 }
 .separator {

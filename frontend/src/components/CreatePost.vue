@@ -14,13 +14,18 @@
       <br
     /></label>
     <div class="publish">
-      <input type="text" class="publish-explain" placeholder="Exprimez-vous" />
+      <input
+        type="textarea"
+        class="publish-explain"
+        placeholder="Exprimez-vous"
+        v-model="content"
+      />
       <div class="publish-explain--separator"></div>
       <div class="post">
-        <p class="post-add">
-          Ajouter un fichier <i class="far file fa-file-image"></i>
-        </p>
-        <button type="submit" class="post-add--publish">Publier</button>
+        <input type="file" class="post-add"  />
+        <button type="submit" class="post-add--publish" v-on:click="createPost">
+          Publier
+        </button>
       </div>
     </div>
   </div>
@@ -28,20 +33,51 @@
 
 <script>
 export default {
-  name: "Post",
+  name: "CreatePost",
   data() {
     return {
-      userId:'',
-      content: '',
-      image: '',
-
-    }
+      userId: "",
+      content: "",
+      image: "",
+    };
   },
-  methods:{
-    createPost(){
-      const userid = localStorage.getItem("Id")
-    }
-  }
+  methods: {
+    createPost() {
+      const userid = parseInt(localStorage.getItem("Id"));
+      const dataPost = {
+        userId: userid,
+        content: this.content,
+        image: this.image,
+      };
+      const jsondataPost = JSON.stringify(dataPost);
+      console.log(jsondataPost);
+
+      const router = this.$router;
+
+      async function pushPost(jsondataPost) {
+        try {
+          let response = await fetch("http://localhost:3000/api/post/", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              authorization: "bearer " + localStorage.getItem("token"),
+            },
+            body: jsondataPost,
+          });
+          if (response.ok) {
+            let responseData = response.json();
+            console.log(responseData);
+            router.push({ name: "LookPost" });
+          } else {
+            console.error("Retour du serveur : " + response.status);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      pushPost(jsondataPost);
+    },
+  },
 };
 </script>
 
@@ -51,7 +87,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  &-title{
+  &-title {
     margin-top: 10px;
   }
 }
@@ -95,13 +131,13 @@ export default {
   }
 }
 
-.file{
+.file {
   font-size: 1.3rem;
 }
 
 @media all and (max-width: 768px) {
-  .publish{
-    width: 80%;
+  .publish {
+    width: 90%;
   }
 }
 </style>
