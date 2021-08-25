@@ -6,7 +6,7 @@
         src="../assets/icon-left-font.png"
         alt="logo Groupomania"
       />
-      <a href="" class="header-profil"><h3>Profil</h3></a>
+      <h3 v-on:click="OpenProfil">Profil</h3>
     </div>
     <div class="separator"></div>
     <CreatePost />
@@ -20,6 +20,12 @@ export default {
   name: "UserWall",
   components: {
     CreatePost,
+  },
+  methods: {
+    OpenProfil() {
+      const router = this.$router;
+      router.push({ name: "UserProfil" });
+    },
   },
 };
 </script>

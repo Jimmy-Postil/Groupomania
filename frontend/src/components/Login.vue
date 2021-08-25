@@ -37,19 +37,21 @@ export default {
         password: this.password,
       });
       const router = this.$router;
-      async function sendLogin(dataSend) {
+      async function sendLogin(dataLogin) {
         try {
           let response = await fetch("http://localhost:3000/api/auth/login", {
             method: "POST",
             headers: {
               "content-type": "application/json",
             },
-            body: dataSend,
+            body: dataLogin,
           });
+          //Enregistrement dans le localStorage
           if (response.ok) {
             let responseData = await response.json();
-            localStorage.setItem("Id", responseData.userId);
+            localStorage.setItem("userId", responseData.userId);
             localStorage.setItem("email", responseData.email);
+            localStorage.setItem("pseudo", responseData.pseudo);
             localStorage.setItem("token", responseData.token);
             localStorage.setItem("isAdmin", responseData.isAdmin);
             router.push({ name: "UserWall" });

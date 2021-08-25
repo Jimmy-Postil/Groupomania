@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require("../models");
 const User = db.User
+const Post = db.Post
 
 //Logique métiers des utilisateurs
 //Création des nouveaux utilisateurs avec signup
@@ -50,6 +51,7 @@ exports.login = (req, res, next) => {
                     res.status(200).json({
                         userId: user.id,
                         isAdmin: user.isAdmin,
+                        pseudo: user.pseudo,
                         email: email,
                         token: jwt.sign(
                             { userId: user.id },
@@ -61,4 +63,34 @@ exports.login = (req, res, next) => {
                 .catch(error => res.status(500).json({ error }));
         })
         .catch(error => res.status(500).json({ error }));
+}
+
+//Suppression de l'utilisateur
+exports.deleteUser = (req, res, next) => {
+    let id = req.body.id
+    Post.destroy({ where: { userId: id } })
+        .then(() => User.destroy({ where: { id: id } }))
+        .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
+        .catch(error => res.status(400).json({ error }))
+        .catch(error => res.status(500).json({ error }));
+}
+
+
+//Modification de l'utilisateur
+exports.updateUser = (req, res, next) => {
+    const id = req.body.id;
+    const pseudo = req.body.pseudo;
+    User.update(
+        { pseudo: pseudo },
+        { where: { id: id } }
+    )
+        .then(() => res.status(200).json({ message: 'Utilisateur modifié !' }))
+        .catch(error => res.status(400).json({ error }));
+}
+
+//Obtenir tous les utilisateurs
+exports.getUser = (req, res, next) => {
+    User.findAll()
+        .then(users => res.status(200).json(users))
+        .catch(error => res.status(400).json({ error }));
 }

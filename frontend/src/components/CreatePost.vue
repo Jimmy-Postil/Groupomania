@@ -22,7 +22,7 @@
       />
       <div class="publish-explain--separator"></div>
       <div class="post">
-        <input type="file" class="post-add"  />
+        <input type="file" class="post-add" @change="onFileSelected" />
         <button type="submit" class="post-add--publish" v-on:click="createPost">
           Publier
         </button>
@@ -32,50 +32,42 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "CreatePost",
   data() {
     return {
+      selectedFile: null,
       userId: "",
       content: "",
       image: "",
     };
   },
   methods: {
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0];
+      console.log(this.selectedFile);
+    },
+
     createPost() {
-      const userid = parseInt(localStorage.getItem("Id"));
-      const dataPost = {
-        userId: userid,
-        content: this.content,
-        image: this.image,
-      };
-      const jsondataPost = JSON.stringify(dataPost);
-      console.log(jsondataPost);
-
       const router = this.$router;
-
-      async function pushPost(jsondataPost) {
-        try {
-          let response = await fetch("http://localhost:3000/api/post/", {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-              authorization: "bearer " + localStorage.getItem("token"),
-            },
-            body: jsondataPost,
-          });
-          if (response.ok) {
-            let responseData = response.json();
-            console.log(responseData);
-            router.push({ name: "LookPost" });
-          } else {
-            console.error("Retour du serveur : " + response.status);
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      pushPost(jsondataPost);
+      const userid = parseInt(localStorage.getItem("Id"));
+      const fd = new FormData();
+      fd.append("image", this.selectedFile, this.selectedFile.name);
+      fd.append("content", this.content);
+      fd.append("userId", userid);
+      axios
+        .post("http://localhost:3000/api/post/", fd, {
+          headers: {
+            "content-type": "application/json",
+            authorization: "bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then(() => {
+          alert("Votre post à bien été enregistré !");
+          router.push({ name: "UserPost" });
+        })
+        .catch((error) => console.log(error));
     },
   },
 };
