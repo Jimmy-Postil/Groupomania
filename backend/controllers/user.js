@@ -80,7 +80,11 @@ exports.deleteUser = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
     const id = req.body.id;
     const pseudo = req.body.pseudo;
+    const email = req.body.email;
+    const password = req.body.password;
     User.update(
+        { password: password },
+        { email: email },
         { pseudo: pseudo },
         { where: { id: id } }
     )
@@ -88,8 +92,23 @@ exports.updateUser = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 }
 
+//Obtenir un utilisateur
+exports.getOneUser = (req, res, next) => {
+    const id = req.body.id;
+
+    User.findOne(id)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Impossible de retrouver l'utilisateur avec l'id:" + id
+            });
+        });
+}
+
 //Obtenir tous les utilisateurs
-exports.getUser = (req, res, next) => {
+exports.getAllUser = (req, res, next) => {
     User.findAll()
         .then(users => res.status(200).json(users))
         .catch(error => res.status(400).json({ error }));

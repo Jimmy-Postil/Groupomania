@@ -6,7 +6,7 @@
         src="../assets/icon-left-font.png"
         alt="logo Groupomania"
       />
-      <h3 v-on:click="OpenProfil">Profil</h3>
+      <i class="fas fa-user-circle header-profil" v-on:click="OpenProfil"></i>
     </div>
     <div class="separator"></div>
     <CreatePost />
@@ -41,10 +41,12 @@ export default {
   display: flex;
   justify-content: space-between;
   &-profil {
-    margin-top: 30px;
+    margin-top: 25px;
     margin-right: 20px;
-    color: black;
+    color: #ffd7d7;
     text-decoration: none;
+    font-size: 2.5rem;
+    cursor: pointer;
   }
 }
 .separator {

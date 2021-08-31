@@ -29,18 +29,22 @@
       </div>
     </div>
   </div>
+  <div class="LookPost"><LookPost /></div>
 </template>
 
 <script>
 import axios from "axios";
+import LookPost from "../components/LookPost.vue";
 export default {
   name: "CreatePost",
+  components: {
+    LookPost,
+  },
   data() {
     return {
       selectedFile: null,
       userId: "",
       content: "",
-      image: "",
     };
   },
   methods: {
@@ -50,8 +54,7 @@ export default {
     },
 
     createPost() {
-      const router = this.$router;
-      const userid = parseInt(localStorage.getItem("Id"));
+      const userid = parseInt(localStorage.getItem("userId"));
       const fd = new FormData();
       fd.append("image", this.selectedFile, this.selectedFile.name);
       fd.append("content", this.content);
@@ -63,9 +66,9 @@ export default {
             authorization: "bearer " + localStorage.getItem("token"),
           },
         })
-        .then(() => {
-          alert("Votre post à bien été enregistré !");
-          router.push({ name: "UserPost" });
+        .then((response) => {
+          console.log(response);
+          document.location.reload();
         })
         .catch((error) => console.log(error));
     },

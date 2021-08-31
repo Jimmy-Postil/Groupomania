@@ -17,5 +17,10 @@ export default {
   },
 };
 </script>
-<style>
-</style>
+<style lang="scss" scoped>
+.img-groupomania {
+  width: 20%;
+  margin-top: 10px;
+  margin-left: 20px;
+}
+</style>>
