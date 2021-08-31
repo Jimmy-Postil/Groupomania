@@ -22,7 +22,13 @@
       />
       <div class="publish-explain--separator"></div>
       <div class="post">
-        <input type="file" class="post-add" @change="onFileSelected" />
+        <input
+          type="file"
+          class="post-add"
+          style="color: transparent"
+          onchange="this.style.color = 'red';"
+          @change="onFileSelected"
+        />
         <button type="submit" class="post-add--publish" v-on:click="createPost">
           Publier
         </button>

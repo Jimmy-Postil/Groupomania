@@ -13,14 +13,12 @@
             class="far fa-trash-alt icon-delete"
             @click="deletePost(post.id)"
           ></i>
-          <ModifyPost :revele="revele" :toggleModale="toggleModale" />
-          <div>
-            <i
-              class="fas fa-edit"
-              @click="toggleModale"
-              :modifyPost="modifyPost(post.id)"
-            ></i>
-          </div>
+          <ModifyPost :revele="revele" :viewModale="viewModale" />
+          <i
+            class="fas fa-edit icon-delete--update"
+            @click="viewModale"
+            :modifyPost="modifyPost(post.id)"
+          ></i>
         </div>
       </div>
       <p>{{ post.content }}</p>
@@ -64,7 +62,7 @@ export default {
       .catch((error) => console.log({ error }));
   },
   methods: {
-    toggleModale() {
+    viewModale() {
       this.revele = !this.revele;
     },
     deletePost(id) {
@@ -116,11 +114,10 @@ export default {
 
 .headerPost {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .post {
-  margin-left: 15px;
   &-pseudo {
     margin-bottom: 0;
   }
@@ -129,11 +126,13 @@ export default {
 .icon {
   font-size: 1.5rem;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   &-delete {
     color: red;
+    cursor: pointer;
     &--update {
       color: blue;
+      cursor: pointer;
     }
   }
 }
