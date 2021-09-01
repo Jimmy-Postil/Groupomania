@@ -16,6 +16,7 @@
 <script>
 import CreatePost from "../components/CreatePost";
 
+
 export default {
   name: "UserWall",
   components: {
@@ -41,7 +42,7 @@ export default {
   display: flex;
   justify-content: space-between;
   &-profil {
-    margin-top: 25px;
+    margin-top: 15px;
     margin-right: 20px;
     color: #ffd7d7;
     text-decoration: none;
@@ -50,8 +51,9 @@ export default {
   }
 }
 .separator {
-  border: 1px solid grey;
-  margin-top: 20px;
+  border: 1px solid rgb(168, 168, 168);
+  background-color: rgb(168, 168, 168);
+  margin-top: 5px;
 }
 
 @media all and (max-width: 768px) {

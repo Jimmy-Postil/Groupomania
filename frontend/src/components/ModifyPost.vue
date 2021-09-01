@@ -35,10 +35,9 @@
 import axios from "axios";
 export default {
   name: "ModifyPost",
-  props: ["revele", "viewModale"],
+  props: ["revele", "viewModale", "post"],
   data() {
     return {
-      userId: localStorage.getItem("userId"),
       content: "",
       selectedFile: null,
     };
@@ -49,15 +48,13 @@ export default {
       console.log(this.selectedFile);
     },
     modifyPost() {
-      const postId = sessionStorage.getItem("postId");
-      const userId = this.userId;
       const fd = new FormData();
-      fd.append("userId", userId);
-      fd.append("postId", postId);
+      fd.append("userId", this.post.userId);
+      fd.append("postId", this.post.id);
       fd.append("content", this.content);
       fd.append("image", this.selectedFile, this.selectedFile.name);
       axios
-        .put("http://localhost:3000/api/post/" + postId, {
+        .put("http://localhost:3000/api/post/" + this.post.id, fd, {
           headers: {
             "Content-Type": "application/json",
             Authorization: "bearer" + localStorage.getItem("token"),
@@ -111,7 +108,7 @@ export default {
   text-align: center;
 }
 
-.flex{
+.flex {
   display: flex;
   width: 100%;
 }

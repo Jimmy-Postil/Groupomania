@@ -8,16 +8,23 @@
             {{ $filters.formatDate(post.createdAt) }}
           </p>
         </div>
+
         <div class="icon">
           <i
             class="far fa-trash-alt icon-delete"
             @click="deletePost(post.id)"
+            v-if="post.userId == userId || isAdmin == isAdmin"
           ></i>
-          <ModifyPost :revele="revele" :viewModale="viewModale" />
+          <ModifyPost
+            :post="posts.find((p) => p.id === modalPostId)"
+            :revele="revele"
+            :viewModale="viewModale"
+            v-if="modalPostId"
+          />
           <i
             class="fas fa-edit icon-delete--update"
-            @click="viewModale"
-            :modifyPost="modifyPost(post.id)"
+            @click="viewModale(post)"
+            v-if="post.userId == userId"
           ></i>
         </div>
       </div>
@@ -25,19 +32,26 @@
       <div class="img">
         <img :src="post.image" img-alt="Image du post" class="img-post" />
       </div>
+      <CreateCommentaire />
+      <LookCommentaire />
     </div>
   </div>
 </template>
 <script>
 import ModifyPost from "../components/ModifyPost.vue";
+import CreateCommentaire from "../components/CreateCommentaire.vue";
+import LookCommentaire from "../components/LookCommentaire.vue";
 import axios from "axios";
 export default {
   name: "LookPost",
   components: {
     ModifyPost,
+    CreateCommentaire,
+    LookCommentaire,
   },
   data() {
     return {
+      modalPostId: null,
       posts: [],
       isAdmin: localStorage.getItem("isAdmin"),
       userId: localStorage.getItem("userId"),
@@ -61,9 +75,29 @@ export default {
       })
       .catch((error) => console.log({ error }));
   },
+  createComment(id) {
+    axios
+      .get("http://localhost:3000/api/post/" + id, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "bearer" + localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        sessionStorage.setItem("postId", parseInt(response.data.id));
+      })
+      .catch((error) => console.log(error));
+  },
   methods: {
-    viewModale() {
+    viewModale(post = null) {
       this.revele = !this.revele;
+      if (this.revele === false) {
+        this.modalPostId = null;
+      }
+      if (post !== null) {
+        this.modalPostId = post.id;
+      }
     },
     deletePost(id) {
       axios
@@ -80,18 +114,7 @@ export default {
         .catch((error) => console.log(error));
     },
     modifyPost(id) {
-      axios
-        .get("http://localhost:3000/api/post/" + id, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "bearer" + localStorage.getItem("token"),
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          sessionStorage.setItem("postId", parseInt(response.data.id));
-        })
-        .catch((error) => console.log(error));
+      this.modalPostId = id;
     },
   },
 };
@@ -110,6 +133,7 @@ export default {
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 10px;
+  background-color: white;
 }
 
 .headerPost {
@@ -126,11 +150,11 @@ export default {
 .icon {
   font-size: 1.5rem;
   display: flex;
-  justify-content: center;
   &-delete {
     color: red;
     cursor: pointer;
     &--update {
+      margin-left: 5px;
       color: blue;
       cursor: pointer;
     }

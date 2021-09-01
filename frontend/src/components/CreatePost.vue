@@ -5,37 +5,37 @@
     integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
     crossorigin="anonymous"
   />
-  <div class="content">
-    <label for="content" class="content-title"
-      ><h3>
-        Ici vous pouvez lire les derniers posts de vos collègues et écrire les
-        votres
-      </h3>
-      <br
-    /></label>
-    <div class="publish">
-      <input
-        type="textarea"
-        class="publish-explain"
-        placeholder="Exprimez-vous"
-        v-model="content"
-      />
-      <div class="publish-explain--separator"></div>
-      <div class="post">
+  <div class="background">
+    <div class="content">
+      <label for="content" class="content-title"
+        ><h3>
+          Ici vous pouvez lire les derniers posts de vos collègues et écrire les
+          votres
+        </h3>
+        <br
+      /></label>
+      <div class="publish">
         <input
-          type="file"
-          class="post-add"
-          style="color: transparent"
-          onchange="this.style.color = 'red';"
-          @change="onFileSelected"
+          type="textarea"
+          class="publish-explain"
+          placeholder="Exprimez-vous"
+          v-model="content"
         />
-        <button type="submit" class="post-add--publish" v-on:click="createPost">
-          Publier
-        </button>
+        <div class="publish-explain--separator"></div>
+        <div class="post">
+          <input type="file" class="post-add" @change="onFileSelected" />
+          <button
+            type="submit"
+            class="post-add--publish"
+            v-on:click="createPost"
+          >
+            Publier
+          </button>
+        </div>
       </div>
     </div>
+    <div class="LookPost"><LookPost /></div>
   </div>
-  <div class="LookPost"><LookPost /></div>
 </template>
 
 <script>
@@ -92,11 +92,13 @@ export default {
     margin-top: 10px;
   }
 }
+
 .publish {
   width: 50%;
   box-shadow: 3px 3px 10px rgb(151, 150, 150);
   border-radius: 10px;
   padding: 20px;
+  background-color: white;
   &-explain {
     width: 60%;
     height: 50px;
@@ -108,7 +110,7 @@ export default {
     background-color: #f0f2f5;
     &--separator {
       margin-bottom: 10px;
-      background-color: grey;
+      background-color: white;
       width: 100%;
       height: 2px;
     }
@@ -134,6 +136,10 @@ export default {
 
 .file {
   font-size: 1.3rem;
+}
+
+.background {
+  background-color: rgb(218, 218, 218);
 }
 
 @media all and (max-width: 768px) {

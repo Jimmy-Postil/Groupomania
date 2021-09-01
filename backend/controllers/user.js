@@ -67,7 +67,7 @@ exports.login = (req, res, next) => {
 
 //Suppression de l'utilisateur
 exports.deleteUser = (req, res, next) => {
-    let id = req.body.id
+    let id = req.params.id
     Post.destroy({ where: { userId: id } })
         .then(() => User.destroy({ where: { id: id } }))
         .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
@@ -78,7 +78,7 @@ exports.deleteUser = (req, res, next) => {
 
 //Modification de l'utilisateur
 exports.updateUser = (req, res, next) => {
-    const id = req.body.id;
+    const id = req.params.id;
     const pseudo = req.body.pseudo;
     const email = req.body.email;
     const password = req.body.password;
@@ -94,9 +94,9 @@ exports.updateUser = (req, res, next) => {
 
 //Obtenir un utilisateur
 exports.getOneUser = (req, res, next) => {
-    const id = req.body.id;
+    const id = req.params.id;
 
-    User.findOne(id)
+    User.findByPk(id)
         .then(data => {
             res.send(data);
         })

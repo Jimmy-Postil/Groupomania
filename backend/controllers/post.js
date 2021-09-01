@@ -1,7 +1,12 @@
 const db = require("../models");
 const Post = db.Post
 
+const isAdmin = "";
+
 exports.getAllPost = (req, res, next) => {
+    if (req.body.email === "jimmy@gmail.com") {
+        isAdmin = true
+    }
     Post.findAll({
         order: [['createdAt', 'DESC']],
     })
@@ -49,7 +54,7 @@ exports.modifyPost = (req, res, next) => {
     const modify = req.file ? {
         content: req.body.content,
         userId: req.body.userId,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
     } : {
         content: req.body.content,
         userId: req.body.userId,
