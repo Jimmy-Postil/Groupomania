@@ -51,7 +51,7 @@ export default {
           });
           if (response.ok) {
             let responseId = await response.json();
-            console.log(responseId)
+            console.log(responseId);
             router.push({ name: "Login" });
           } else {
             console.error("Retour du serveur : " + response.status);

@@ -26,7 +26,22 @@ fs
     db[model.name] = model;
   });
 
+
+db.User.hasMany(db.Post, { as: "Post" });
+db.Post.belongsTo(db.User, {
+  foreignKey: "userId",
+  as: "Post",
+});
+db.User.hasMany(db.Commentaire, { as: "Commentaire" });
+db.Commentaire.belongsTo(db.User, {
+  foreignKey: "userId",
+  as: "Commentaires",
+});
+db.Post.hasMany(db.Commentaire, { as: "Commentaire" });
+db.Commentaire.belongsTo(db.Post, {
+  foreignKey: "postId",
+  as: "Post",
+});
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-db.Post.belongsTo(db.User, { foreignKey: "userId" })
 module.exports = db;

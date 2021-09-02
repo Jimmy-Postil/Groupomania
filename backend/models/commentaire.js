@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const commentaire = sequelize.define("commentaire", {
+    const Commentaire = sequelize.define("Commentaire", {
         userId: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
@@ -22,5 +22,5 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
     });
-    return commentaire;
+    return Commentaire;
 }

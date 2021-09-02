@@ -1,9 +1,9 @@
 <template>
   <div class="article">
-    <div class="content" v-for="post in posts" :key="post.id">
+    <div class="content" v-for="post in posts" :key="post.userId">
       <div class="headerPost">
         <div class="post">
-          <p class="post-pseudo">Pseudo</p>
+          <p class="post-pseudo">{{  }}</p>
           <p class="post-pseudo--create">
             {{ $filters.formatDate(post.createdAt) }}
           </p>

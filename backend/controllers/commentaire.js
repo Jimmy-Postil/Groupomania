@@ -1,5 +1,6 @@
 const db = require("../models/");
 const Commentaire = db.commentaire;
+const User = db.users;
 
 exports.createCommentaire = (req, res, next) => {
     const commentaire = {
@@ -72,6 +73,7 @@ exports.getOneCommentaire = (req, res, next) => {
 
 exports.getAllCommentaire = (req, res, next) => {
     Commentaire.findAll({
+        include: [{ model: User }],
         order: [['updatedAt', "DESC"], ['createdAt', "DESC"]]
     })
 

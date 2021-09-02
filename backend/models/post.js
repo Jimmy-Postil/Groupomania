@@ -1,5 +1,3 @@
-const User = require("./user");
-
 module.exports = (sequelize, DataTypes) => {
     const Post = sequelize.define("Post", {
         userId: {

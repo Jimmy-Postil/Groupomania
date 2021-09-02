@@ -25,7 +25,17 @@ export default {
 &-groupomania {
   width: 20%;
   margin-top: 10px;
-  margin-left: 20px;
 }
+}
+@media all and (max-width: 768px) {
+  .img-groupomania {
+    width: 50%;
+  }
+}
+
+@media all and (max-width: 450px) {
+  .img-groupomania {
+    width: 60%;
+  }
 }
 </style>>

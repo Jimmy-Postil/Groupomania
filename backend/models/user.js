@@ -1,3 +1,4 @@
+
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define("User", {
         email: {
@@ -24,6 +25,6 @@ module.exports = (sequelize, DataTypes) => {
         isAdmin: {
             type: DataTypes.BOOLEAN,
         },
-    })
+    });
     return User;
 }
