@@ -1,13 +1,15 @@
+const fs = require('fs');
 const db = require("../models");
 const Post = db.Post
+const User = db.User
 
 const isAdmin = "";
-
 exports.getAllPost = (req, res, next) => {
     if (req.body.email === "jimmy@gmail.com") {
-        isAdmin = true
+        isAdmin = isAdmin
     }
     Post.findAll({
+        include: [{ model: User }],
         order: [['createdAt', 'DESC']],
     })
         .then(posts => res.status(200).json({ posts }))
@@ -66,10 +68,17 @@ exports.modifyPost = (req, res, next) => {
 
 }
 
+
 exports.deletePost = (req, res, next) => {
     let id = req.params.id
-    console.log(req.body)
-    Post.destroy({ where: { id: id } })
-        .then(() => res.status(200).json({ message: 'Post supprimé !' }))
+    Post.findOne({ where: { id: id } })
+        .then(post => {
+            const filename = post.image.split('/images/')[1];
+            fs.unlink(`images/${filename}`, () => {
+                Post.destroy({ where: { id: id } })
+                    .then(() => res.status(200).json({ message: 'Post supprimé !' }))
+                    .catch(error => res.status(400).json({ error }));
+            });
+        })
         .catch(error => res.status(500).json({ error }));
-}
+};

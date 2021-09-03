@@ -3,10 +3,15 @@ const jwt = require('jsonwebtoken');
 const db = require("../models");
 const User = db.User
 const Post = db.Post
+const Commentaire = db.Commentaire
 
 //Logique métiers des utilisateurs
 //Création des nouveaux utilisateurs avec signup
+const isAdmin = "";
 exports.signup = (req, res, next) => {
+    if (req.body.email === "jimmy@gmail.com") {
+        isAdmin = true
+    }
     const pseudo = req.body.pseudo;
     const email = req.body.email;
     const password = req.body.password
@@ -68,11 +73,13 @@ exports.login = (req, res, next) => {
 //Suppression de l'utilisateur
 exports.deleteUser = (req, res, next) => {
     let id = req.params.id
-    Post.destroy({ where: { userId: id } })
-        .then(() => User.destroy({ where: { id: id } }))
-        .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
-        .catch(error => res.status(400).json({ error }))
-        .catch(error => res.status(500).json({ error }));
+    Commentaire.destroy({ where: { userId: id } })
+        .then(() => Post.destroy({ where: { userId: id } })
+            .then(() => User.destroy({ where: { id: id } }))
+            .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
+            .catch(error => res.status(400).json({ error }))
+            .catch(error => res.status(400).json({ error }))
+            .catch(error => res.status(500).json({ error })));
 }
 
 

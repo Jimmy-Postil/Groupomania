@@ -1,11 +1,11 @@
 <template>
-<div class="img">
-  <img
-    class="img-groupomania"
-    src="../assets/icon-above-font.png"
-    alt="logo groupomania"
-  />
-</div>
+  <div class="img">
+    <img
+      class="img-groupomania"
+      src="../assets/icon-left-font.png"
+      alt="logo groupomania"
+    />
+  </div>
   <Profile />
 </template>
 
@@ -20,12 +20,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.img{
+.img {
   text-align: center;
-&-groupomania {
-  width: 20%;
-  margin-top: 10px;
-}
+  &-groupomania {
+    width: 20%;
+    margin-top: 10px;
+  }
 }
 @media all and (max-width: 768px) {
   .img-groupomania {
@@ -38,4 +38,4 @@ export default {
     width: 60%;
   }
 }
-</style>>
+</style>

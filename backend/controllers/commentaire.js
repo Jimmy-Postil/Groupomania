@@ -1,11 +1,12 @@
 const db = require("../models/");
-const Commentaire = db.commentaire;
-const User = db.users;
+const Commentaire = db.Commentaire;
+const User = db.User;
+const Post = db.Post;
 
 exports.createCommentaire = (req, res, next) => {
     const commentaire = {
         content: req.body.content,
-        postId: req.body.postId,
+        PostId: req.body.postId,
         userId: req.body.userId,
     };
     Commentaire.create(commentaire)
@@ -70,10 +71,13 @@ exports.getOneCommentaire = (req, res, next) => {
             });
         });
 }
-
+const isAdmin = "";
 exports.getAllCommentaire = (req, res, next) => {
+    if (req.body.email === "jimmy@gmail.com") {
+        isAdmin = true
+    }
     Commentaire.findAll({
-        include: [{ model: User }],
+        include: [{ model: User }, { model: Post }],
         order: [['updatedAt', "DESC"], ['createdAt', "DESC"]]
     })
 

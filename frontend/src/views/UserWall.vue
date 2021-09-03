@@ -16,7 +16,6 @@
 <script>
 import CreatePost from "../components/CreatePost";
 
-
 export default {
   name: "UserWall",
   components: {

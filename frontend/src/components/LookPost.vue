@@ -3,7 +3,7 @@
     <div class="content" v-for="post in posts" :key="post.userId">
       <div class="headerPost">
         <div class="post">
-          <p class="post-pseudo">{{  }}</p>
+          <p class="post-pseudo">{{ post.User.pseudo }}</p>
           <p class="post-pseudo--create">
             {{ $filters.formatDate(post.createdAt) }}
           </p>
@@ -13,7 +13,7 @@
           <i
             class="far fa-trash-alt icon-delete"
             @click="deletePost(post.id)"
-            v-if="post.userId == userId || isAdmin == isAdmin"
+            v-if="post.userId == userId || isAdmin == true"
           ></i>
           <ModifyPost
             :post="posts.find((p) => p.id === modalPostId)"
@@ -28,12 +28,12 @@
           ></i>
         </div>
       </div>
-      <p>{{ post.content }}</p>
+      <p class="description">{{ post.content }}</p>
       <div class="img">
         <img :src="post.image" img-alt="Image du post" class="img-post" />
       </div>
-      <CreateCommentaire />
       <LookCommentaire />
+      <CreateCommentaire :createComment="createComment(post.id)" />
     </div>
   </div>
 </template>
@@ -58,36 +58,30 @@ export default {
       revele: false,
     };
   },
+  filters: {
+    sortedComment() {
+      if (this.commentaires.postId === this.commentaire.post.Id) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
   beforeMount() {
     axios
       .get("http://localhost:3000/api/post/", {
         method: "GET",
         headers: {
-          authorization: "bearer" + localStorage.getItem("token"),
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((response) => {
         const data = response.data;
         const posts = data.posts;
-        console.log(data);
         console.log(posts);
         this.posts = posts;
       })
       .catch((error) => console.log({ error }));
-  },
-  createComment(id) {
-    axios
-      .get("http://localhost:3000/api/post/" + id, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "bearer" + localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        sessionStorage.setItem("postId", parseInt(response.data.id));
-      })
-      .catch((error) => console.log(error));
   },
   methods: {
     viewModale(post = null) {
@@ -99,12 +93,25 @@ export default {
         this.modalPostId = post.id;
       }
     },
+    createComment(id) {
+      axios
+        .get("http://localhost:3000/api/post/" + id, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+          sessionStorage.setItem("postId", parseInt(response.data.id));
+        })
+        .catch((error) => console.log(error));
+    },
     deletePost(id) {
       axios
         .delete("http://localhost:3000/api/post/" + id, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "bearer" + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         })
         .then(() => {
@@ -144,18 +151,27 @@ export default {
 .post {
   &-pseudo {
     margin-bottom: 0;
+    font-style: italic;
+    color: rgb(43, 43, 241);
+    &--create {
+      font-style: italic;
+    }
   }
+}
+
+.description {
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 
 .icon {
   font-size: 1.5rem;
-  display: flex;
   &-delete {
     color: red;
     cursor: pointer;
     &--update {
       margin-left: 5px;
-      color: blue;
+      color: rgb(43, 43, 241);
       cursor: pointer;
     }
   }
@@ -164,6 +180,8 @@ export default {
   text-align: center;
   &-post {
     width: 100%;
+    height: 500px;
+    object-fit: cover;
   }
 }
 @media all and (max-width: 768px) {

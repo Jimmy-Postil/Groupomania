@@ -57,12 +57,11 @@ export default {
         .put("http://localhost:3000/api/post/" + this.post.id, fd, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "bearer" + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         })
         .then(() => {
           alert("Votre Post à bien été modifié");
-          sessionStorage.clear();
           document.location.reload();
         })
         .catch((error) => console.log(error));

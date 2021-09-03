@@ -1,22 +1,26 @@
+'use strict';
+const {
+    Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    const Post = sequelize.define("Post", {
-        userId: {
-            type: DataTypes.INTEGER(11),
-            allowNull: false,
-            validate: {
-                notEmpty: true,
-            },
-        },
-        content: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notEmpty: true,
-            },
-        },
-        image: {
-            type: DataTypes.STRING,
-        },
+    class Post extends Model {
+
+        static associate(models) {
+
+            models.Post.hasMany(models.Commentaire);
+            models.Post.belongsTo(models.User, {
+                foreignKey: "userId",
+                onDelete: 'cascade'
+            })
+        }
+    };
+    Post.init({
+        userId: DataTypes.INTEGER,
+        content: DataTypes.STRING,
+        image: DataTypes.STRING
+    }, {
+        sequelize,
+        modelName: 'Post',
     });
     return Post;
-}
+};

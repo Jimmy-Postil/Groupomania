@@ -15,6 +15,7 @@
         <br
       /></label>
       <div class="publish">
+        <h3 class="title">Ajouter une publication</h3>
         <input
           type="textarea"
           class="publish-explain"
@@ -69,7 +70,7 @@ export default {
         .post("http://localhost:3000/api/post/", fd, {
           headers: {
             "content-type": "application/json",
-            authorization: "bearer " + localStorage.getItem("token"),
+            authorization: "Bearer " + localStorage.getItem("token"),
           },
         })
         .then((response) => {

@@ -11,6 +11,7 @@
       />
       <h4>email: {{ user.email }}</h4>
       <input type="text" placeholder="Changer d'email" v-model="user.email" />
+      <button type="submit" @click="updateUser(user.id)">Changer</button>
       <h4>
         Création de votre compte le {{ $filters.formatDate(user.createdAt) }}
       </h4>
@@ -51,7 +52,7 @@ export default {
         .get("http://localhost:3000/api/auth/" + id, {
           headers: {
             "Content-Type": "application/json",
-            authorization: "bearer" + localStorage.getItem("token"),
+            authorization: "Bearer " + localStorage.getItem("token"),
           },
         })
         .then((res) => {
@@ -62,18 +63,34 @@ export default {
         .catch((error) => console.log({ error }));
     },
     deleteUser(id) {
-      const token = localStorage.getItem("usertoken");
       const router = this.$router;
       axios
         .delete("http://localhost:3000/api/auth/" + id, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         })
         .then(() => {
           alert("Attention cet action est irréversible");
           router.push({ name: "Signup" });
+        })
+        .catch((error) => console.log(error));
+    },
+    updateUser(id) {
+      const fd = new FormData();
+      fd.append("email", this.user.email);
+      fd.append("pseudo", this.user.pseudo);
+      fd.append("password", this.password);
+      axios
+        .put("http://localhost:3000/api/auth/" + id, fd, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then(() => {
+          alert("élément modifié");
         })
         .catch((error) => console.log(error));
     },
@@ -119,8 +136,8 @@ button {
       margin-top: 5px;
     }
   }
-input{
-  width: 50%;
-}
+  input {
+    width: 50%;
+  }
 }
 </style>

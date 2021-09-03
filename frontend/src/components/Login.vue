@@ -2,8 +2,20 @@
   <div class="login">
     <h2 class="login-title">Bienvenue sur Groupomania</h2>
     <h3 class="login-title--login">Connectez-vous</h3>
-    <input type="text" placeholder="Adresse e-mail" v-model="email" />
-    <input type="password" placeholder="Mot de passe" v-model="password" />
+    <input
+      type="text"
+      placeholder="Adresse e-mail"
+      required
+      v-model="email"
+      pattern="[/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/]+"
+    />
+    <input
+      type="password"
+      placeholder="Mot de passe"
+      required
+      v-model="password"
+      pattern="[ /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&-_]){8,}/]+"
+    />
     <input
       type="button"
       class="login-title--login_connected"
@@ -12,9 +24,7 @@
     />
     <p class="login-title--login_connected__noaccount">
       Pas de compte?
-      <router-link
-        to="/signup"
-        class="login-title--login_connected__noaccount__link"
+      <router-link to="/" class="login-title--login_connected__noaccount__link"
         >Inscrivez-vous</router-link
       >
     </p>

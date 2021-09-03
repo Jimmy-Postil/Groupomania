@@ -1,6 +1,19 @@
 <template>
-  <input type="textarea" v-model="content" placeholder="Votre commentaire" />
-  <button type="submit" @click="createCommentaire()">Poster</button>
+  <div class="comment">
+    <input
+      type="textarea"
+      class="comment-content"
+      v-model="content"
+      placeholder="Votre commentaire"
+    />
+    <button
+      type="submit"
+      class="comment-content-post"
+      @click="createCommentaire()"
+    >
+      <i class="fas fa-plus-circle"></i>
+    </button>
+  </div>
 </template>
 
 <script>
@@ -29,7 +42,7 @@ export default {
         .post("http://localhost:3000/api/commentaires/", fd, {
           headers: {
             "content-type": "application/json",
-            authorization: "bearer " + localStorage.getItem("token"),
+            authorization: "Bearer " + localStorage.getItem("token"),
           },
         })
         .then(() => {
@@ -43,5 +56,24 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.comment {
+  margin-top: 10px;
+  &-content {
+    width: 50%;
+    color: #7b7782;
+    background-color: #f0f2f5;
+    height: 40px;
+    border-radius: 8px;
+    border: 2px solid rgb(172, 172, 172);
+    &-post {
+      color: #fd2d01;
+      background-color: #ffd7d7;
+      margin-left: -30px;
+      height: 40px;
+      border: 2px solid rgb(172, 172, 172);
+      border-radius: 0px 8px 8px 0px;
+    }
+  }
+}
 </style>
