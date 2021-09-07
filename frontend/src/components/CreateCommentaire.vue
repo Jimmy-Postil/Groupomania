@@ -20,6 +20,7 @@
 import axios from "axios";
 export default {
   name: "Createcommentaire",
+  props: ["postId"],
   data() {
     return {
       content: "",
@@ -32,10 +33,9 @@ export default {
     },
 
     createCommentaire() {
-      const postId = parseInt(sessionStorage.getItem("postId"));
       const userid = parseInt(localStorage.getItem("userId"));
       const fd = new FormData();
-      fd.append("postId", postId);
+      fd.append("postId", this.postId);
       fd.append("content", this.content);
       fd.append("userId", userid);
       axios

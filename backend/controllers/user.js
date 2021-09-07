@@ -7,10 +7,12 @@ const Commentaire = db.Commentaire
 
 //Logique métiers des utilisateurs
 //Création des nouveaux utilisateurs avec signup
-const isAdmin = "";
 exports.signup = (req, res, next) => {
+    let isAdmin = "";
     if (req.body.email === "jimmy@gmail.com") {
         isAdmin = true
+    } else {
+        isAdmin = false
     }
     const pseudo = req.body.pseudo;
     const email = req.body.email;
@@ -22,7 +24,7 @@ exports.signup = (req, res, next) => {
                 pseudo: pseudo,
                 email: email,
                 password: hash,
-                isAdmin: false
+                isAdmin: isAdmin
             });
             //Si un champ du formulaire n'est pas remplie
             if (pseudo === null || email === null || password === null) {
@@ -90,9 +92,11 @@ exports.updateUser = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     User.update(
-        { password: password },
-        { email: email },
-        { pseudo: pseudo },
+        {
+            password: password,
+            email: email,
+            pseudo: pseudo
+        },
         { where: { id: id } }
     )
         .then(() => res.status(200).json({ message: 'Utilisateur modifié !' }))

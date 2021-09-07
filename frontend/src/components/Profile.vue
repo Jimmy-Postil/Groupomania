@@ -9,6 +9,7 @@
         placeholder="Changer de pseudo"
         v-model="user.pseudo"
       />
+      <button type="submit" @click="updateUser(user.id)">Changer</button>
       <h4>email: {{ user.email }}</h4>
       <input type="text" placeholder="Changer d'email" v-model="user.email" />
       <button type="submit" @click="updateUser(user.id)">Changer</button>

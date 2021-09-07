@@ -13,7 +13,7 @@
           <i
             class="far fa-trash-alt icon-delete"
             @click="deletePost(post.id)"
-            v-if="post.userId == userId || isAdmin == true"
+            v-if="post.userId == userId || isAdmin == 'true'"
           ></i>
           <ModifyPost
             :post="posts.find((p) => p.id === modalPostId)"
@@ -32,8 +32,14 @@
       <div class="img">
         <img :src="post.image" img-alt="Image du post" class="img-post" />
       </div>
-      <LookCommentaire />
-      <CreateCommentaire :createComment="createComment(post.id)" />
+      <LookCommentaire
+        :postId="post.id"
+        :commentaires="filterComment(post.id)"
+      />
+      <CreateCommentaire
+        :createComment="createComment(post.id)"
+        :postId="post.id"
+      />
     </div>
   </div>
 </template>
@@ -53,19 +59,11 @@ export default {
     return {
       modalPostId: null,
       posts: [],
+      commentaires: [],
       isAdmin: localStorage.getItem("isAdmin"),
       userId: localStorage.getItem("userId"),
       revele: false,
     };
-  },
-  filters: {
-    sortedComment() {
-      if (this.commentaires.postId === this.commentaire.post.Id) {
-        return true;
-      } else {
-        return false;
-      }
-    },
   },
   beforeMount() {
     axios
@@ -78,8 +76,20 @@ export default {
       .then((response) => {
         const data = response.data;
         const posts = data.posts;
-        console.log(posts);
         this.posts = posts;
+      })
+      .catch((error) => console.log({ error }));
+    axios
+      .get("http://localhost:3000/api/commentaires/", {
+        method: "GET",
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+        this.commentaires = data;
       })
       .catch((error) => console.log({ error }));
   },
@@ -105,6 +115,11 @@ export default {
           sessionStorage.setItem("postId", parseInt(response.data.id));
         })
         .catch((error) => console.log(error));
+    },
+    filterComment(postId) {
+      return this.commentaires.filter(
+        (commentaire) => commentaire.PostId === postId
+      );
     },
     deletePost(id) {
       axios

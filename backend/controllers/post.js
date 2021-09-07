@@ -3,11 +3,8 @@ const db = require("../models");
 const Post = db.Post
 const User = db.User
 
-const isAdmin = "";
+//Obtenir tous les posts
 exports.getAllPost = (req, res, next) => {
-    if (req.body.email === "jimmy@gmail.com") {
-        isAdmin = isAdmin
-    }
     Post.findAll({
         include: [{ model: User }],
         order: [['createdAt', 'DESC']],
@@ -16,6 +13,7 @@ exports.getAllPost = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 }
 
+//Obtenir un seul post
 exports.getOnePost = (req, res, next) => {
     const id = req.params.id;
     Post.findByPk(id)
@@ -29,6 +27,7 @@ exports.getOnePost = (req, res, next) => {
         });
 }
 
+//Création d'un post
 exports.addPost = (req, res, next) => {
     const userId = req.body.userId;
     const content = req.body.content;
@@ -51,6 +50,7 @@ exports.addPost = (req, res, next) => {
 
 }
 
+//Modification d'un post
 exports.modifyPost = (req, res, next) => {
     const id = req.params.id;
     const modify = req.file ? {
@@ -68,7 +68,7 @@ exports.modifyPost = (req, res, next) => {
 
 }
 
-
+//Suppresion d'un post
 exports.deletePost = (req, res, next) => {
     let id = req.params.id
     Post.findOne({ where: { id: id } })

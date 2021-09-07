@@ -11,12 +11,14 @@
       </p>
     </div>
     <div class="comment">
-      <p class="comment-content">{{ commentaire.content }}</p>
+      <p class="comment-content">
+        {{ commentaire.content }}
+      </p>
       <div class="icon">
         <i
           class="far fa-trash-alt icon-delete"
           @click="deleteCommentaire(commentaire.id)"
-          v-if="commentaire.userId == userId || isAdmin == true"
+          v-if="commentaire.userId == userId || isAdmin == 'true'"
         ></i>
         <ModifyCommentaire
           :commentaire="commentaires.find((p) => p.id === modalCommentaireId)"
@@ -42,30 +44,16 @@ export default {
   components: {
     ModifyCommentaire,
   },
+  props: ["postId", "commentaires"],
   data() {
     return {
       modalCommentaireId: null,
-      commentaires: [],
       isAdmin: localStorage.getItem("isAdmin"),
       userId: localStorage.getItem("userId"),
       revele: false,
     };
   },
-  beforeMount() {
-    axios
-      .get("http://localhost:3000/api/commentaires/", {
-        method: "GET",
-        headers: {
-          authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        const data = response.data;
-        console.log(data);
-        this.commentaires = data;
-      })
-      .catch((error) => console.log({ error }));
-  },
+  beforeMount() {},
   methods: {
     viewModale(commentaire = null) {
       this.revele = !this.revele;
@@ -99,7 +87,7 @@ export default {
 
 <style lang="scss" scoped>
 .icon {
-  margin-left: 20px;
+  margin-top: -15px;
   &-delete {
     font-size: 1.2rem;
     color: red;
