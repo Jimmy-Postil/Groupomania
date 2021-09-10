@@ -2,13 +2,19 @@
   <div class="login">
     <h2 class="login-title">Bienvenue sur Groupomania</h2>
     <h3 class="login-title--signup">Inscrivez-vous</h3>
-    <input type="text" placeholder="Pseudo" required v-model="pseudo" />
+    <p v-if="errors.length">
+    <b>Veuillez corriger les erreurs suivantes:</b>
+    <ul>
+      <li v-for="error in errors" :key="error">{{ error }}</li>
+    </ul>
+  </p>
+    <input type="text" placeholder="Pseudo" required v-model="pseudo" @change="checkForm"/>
     <input
       type="text"
       placeholder="Adresse e-mail"
       required
       v-model="email"
-      pattern="[/^[a-zA-Z0-9.!#$%’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/]+"
+      @change="checkForm($event)"
       id="email"
     />
     <input
@@ -16,7 +22,7 @@
       placeholder="Mot de passe"
       required
       v-model="password"
-      pattern="[ /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?-_]){8,}/]+"
+       @change="checkForm($event)"
       id="password"
     />
     <input
@@ -41,12 +47,43 @@ export default {
   name: "Signup",
   data() {
     return {
+      errors: [],
       pseudo: "",
-      email: "",
-      password: "",
+      email: null,
+      password: null,
     };
   },
   methods: {
+    checkForm(event) {
+      this.errors = [];
+
+      if (!this.email) {
+        this.errors.push("Email manquant");
+      } else if (!this.validEmail(this.email)) {
+        this.errors.push("Veuillez rentrer un email valide");
+      }
+
+      if (!this.password) {
+        this.errors.push("Mot de passe manquant");
+      } else if (!this.validPassword(this.password)) {
+        this.errors.push("Votre mot de passe doit contenir au minimum 8 caractères avec au moins une minuscule, une majuscule, un chiffre et un caractère spécial.");
+      }
+
+      if (!this.errors.length) {
+        return true;
+      }
+
+      event.preventDefault();
+    },
+    validEmail(email) {
+      const regex =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return regex.test(email);
+    },
+    validPassword(password) {
+      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?-_]){8,}/;
+      return regex.test(password);
+    },
     signupUser() {
       let dataSignup = JSON.stringify({
         email: this.email,

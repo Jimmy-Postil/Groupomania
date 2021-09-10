@@ -2,19 +2,25 @@
   <div class="login">
     <h2 class="login-title">Bienvenue sur Groupomania</h2>
     <h3 class="login-title--login">Connectez-vous</h3>
+    <p v-if="errors.length">
+    <b>Veuillez corriger les erreurs suivantes:</b>
+    <ul>
+      <li v-for="error in errors" :key="error">{{ error }}</li>
+    </ul>
+  </p>
     <input
       type="text"
       placeholder="Adresse e-mail"
       required
       v-model="email"
-      pattern="[/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/]+"
+      @change="checkForm($event)"
     />
     <input
       type="password"
       placeholder="Mot de passe"
       required
       v-model="password"
-      pattern="[ /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&-_]){8,}/]+"
+      @change="checkForm($event)"
     />
     <input
       type="button"
@@ -36,11 +42,29 @@ export default {
   name: "Login",
   data() {
     return {
+      errors: [],
       email: "",
       password: "",
     };
   },
   methods: {
+    checkForm(event) {
+      this.errors = [];
+
+      if (!this.email) {
+        this.errors.push("Veuillez rentrer votre adresse email");
+      }
+
+      if (!this.password) {
+        this.errors.push("Veuillez rentrer votre mot de passe");
+      }
+
+      if (!this.errors.length) {
+        return true;
+      }
+
+      event.preventDefault();
+    },
     userLogin() {
       let dataLogin = JSON.stringify({
         email: this.email,
