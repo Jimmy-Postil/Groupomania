@@ -1,6 +1,9 @@
 <template>
   <div class="content">
     <div class="user">
+      <input id="fileUpload" type="file" hidden @click="onFileSelected" />
+      <img :src="user.image || AnonymousUser" @click="chooseFiles()" />
+      <i class="fas fa-user-circle"></i>
       <h2>Bonjour {{ user.pseudo }}</h2>
       <h3>Voici les informations concernant votre compte</h3>
       <h4>pseudo: {{ user.pseudo }}</h4>
@@ -9,10 +12,14 @@
         placeholder="Changer de pseudo"
         v-model="user.pseudo"
       />
-      <button type="submit" @click="updateUser(user.id)">Changer</button>
+      <button type="submit" @click="updatePseudo(user.id)">Changer</button>
       <h4>email: {{ user.email }}</h4>
-      <input type="text" placeholder="Changer d'email" v-model="user.email" />
-      <button type="submit" @click="updateUser(user.id)">Changer</button>
+      <input
+        type="password"
+        placeholder="Changer votre mot de passe"
+        v-model="password"
+      />
+      <button type="submit" @click="updatePassword(user.id)">Changer</button>
       <h4>
         Création de votre compte le {{ $filters.formatDate(user.createdAt) }}
       </h4>
@@ -32,13 +39,16 @@
 
 <script>
 import axios from "axios";
+import AnonymousUser from "../assets/avatar.png";
 export default {
   name: "Profile",
   data() {
     return {
       user: "",
-      password: localStorage.getItem("token"),
+      password: "",
       isAdmin: "",
+      selectedFile: null,
+      AnonymousUser,
     };
   },
   beforeMount() {
@@ -47,6 +57,27 @@ export default {
     this.newUser();
   },
   methods: {
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0];
+      console.log(this.selectedFile);
+      const id = localStorage.getItem("userId");
+      const fd = new FormData();
+      fd.append("image", this.selectedFile, this.selectedFile.name);
+      axios
+        .put("http://localhost:3000/api/auth/" + id + "/set-image", fd, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then(() => {
+          alert("image modifié");
+        })
+        .catch((error) => console.log(error));
+    },
+    chooseFiles() {
+      document.getElementById("fileUpload").click();
+    },
     newUser() {
       const id = localStorage.getItem("userId");
       axios
@@ -78,20 +109,37 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    updateUser(id) {
-      const fd = new FormData();
-      fd.append("email", this.user.email);
-      fd.append("pseudo", this.user.pseudo);
-      fd.append("password", this.password);
+    updatePseudo(id) {
       axios
-        .put("http://localhost:3000/api/auth/" + id, fd, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
+        .put(
+          "http://localhost:3000/api/auth/" + id,
+          { pseudo: this.user.pseudo },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
         .then(() => {
-          alert("élément modifié");
+          alert("Pseudo modifié");
+        })
+        .catch((error) => console.log(error));
+    },
+    updatePassword(id) {
+      axios
+        .put(
+          "http://localhost:3000/api/auth/" + id + "/set-password",
+          { password: this.password },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
+        .then(() => {
+          alert("Mot de passe modifié");
         })
         .catch((error) => console.log(error));
     },

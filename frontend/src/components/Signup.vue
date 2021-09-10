@@ -2,19 +2,14 @@
   <div class="login">
     <h2 class="login-title">Bienvenue sur Groupomania</h2>
     <h3 class="login-title--signup">Inscrivez-vous</h3>
-    <input
-      type="text"
-      placeholder="Pseudo"
-      required
-      v-model="pseudo"
-      pattern="[A-Za-zàáâãäåçèéêëìíîïðòóôõöùúûüýÿñÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÐÒÓÔÕÖÙÚÛÜÝŸÑ -]+"
-    />
+    <input type="text" placeholder="Pseudo" required v-model="pseudo" />
     <input
       type="text"
       placeholder="Adresse e-mail"
       required
       v-model="email"
       pattern="[/^[a-zA-Z0-9.!#$%’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/]+"
+      id="email"
     />
     <input
       type="password"
@@ -22,6 +17,7 @@
       required
       v-model="password"
       pattern="[ /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?-_]){8,}/]+"
+      id="password"
     />
     <input
       type="submit"
@@ -45,8 +41,8 @@ export default {
   name: "Signup",
   data() {
     return {
-      email: "",
       pseudo: "",
+      email: "",
       password: "",
     };
   },

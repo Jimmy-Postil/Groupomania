@@ -17,6 +17,11 @@ exports.signup = (req, res, next) => {
     const pseudo = req.body.pseudo;
     const email = req.body.email;
     const password = req.body.password
+
+    //Si un champ du formulaire n'est pas remplie
+    if (pseudo == null || email == null || password == null) {
+        return res.status(400).json({ error: "Veuillez remplir tous les champs du formulaire" });
+    }
     //Création d'un nouvel utilisateur et hashage du mot de passe
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
@@ -26,10 +31,6 @@ exports.signup = (req, res, next) => {
                 password: hash,
                 isAdmin: isAdmin
             });
-            //Si un champ du formulaire n'est pas remplie
-            if (pseudo === null || email === null || password === null) {
-                return res.status(401).json({ error: "Veuillez remplir tous les champs du formulaire" });
-            }
             //Sauvegarde de l'utilisateur dans la base de données
             user.save()
                 .then(() => res.status(201).json({ message: "Utilisateur crée !" }))
@@ -86,20 +87,45 @@ exports.deleteUser = (req, res, next) => {
 
 
 //Modification de l'utilisateur
-exports.updateUser = (req, res, next) => {
+exports.updatePseudo = (req, res, next) => {
     const id = req.params.id;
     const pseudo = req.body.pseudo;
-    const email = req.body.email;
-    const password = req.body.password;
     User.update(
         {
-            password: password,
-            email: email,
-            pseudo: pseudo
+            pseudo: pseudo,
         },
         { where: { id: id } }
     )
-        .then(() => res.status(200).json({ message: 'Utilisateur modifié !' }))
+        .then(() => res.status(200).json({ message: 'Pseudo modifié !' }))
+        .catch(error => res.status(400).json({ error }));
+}
+
+exports.updatePassword = (req, res, next) => {
+    const id = req.params.id;
+    const password = req.body.password;
+    console.log(req.body);
+    bcrypt.hash(password, 10)
+        .then(hash => {
+            User.update(
+                {
+                    password: hash,
+                }, { where: { id: id } })
+                .then(() => res.status(200).json({ message: 'Mot de passe modifié !' }))
+                .catch(error => res.status(400).json({ error }));
+        })
+        .catch(error => { console.log(error); return res.status(500).json({ error }) });
+}
+
+exports.updateImage = (req, res, next) => {
+    const id = req.params.id;
+    const image = req.body.image;
+    User.update(
+        {
+            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` 
+        },
+        { where: { id: id } }
+    )
+        .then(() => res.status(200).json({ message: 'image modifié !' }))
         .catch(error => res.status(400).json({ error }));
 }
 
