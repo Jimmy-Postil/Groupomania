@@ -6,7 +6,12 @@
         src="../assets/icon-left-font.png"
         alt="logo Groupomania"
       />
-      <i class="fas fa-user-circle header-profil" v-on:click="OpenProfil"></i>
+      <i
+        class="fas fa-user-circle header-profil"
+        v-if="!image"
+        v-on:click="OpenProfil"
+      ></i>
+      <img v-if="image" :src="image" v-on:click="OpenProfil" width="70" />
     </div>
     <div class="separator"></div>
     <CreatePost />
@@ -20,6 +25,11 @@ export default {
   name: "UserWall",
   components: {
     CreatePost,
+  },
+  data() {
+    return {
+      image: localStorage.getItem("imageProfil"),
+    };
   },
   methods: {
     OpenProfil() {

@@ -1,9 +1,12 @@
 <template>
   <div class="content">
     <div class="user">
-      <input id="fileUpload" type="file" hidden @click="onFileSelected" />
-      <img :src="user.image || AnonymousUser" @click="chooseFiles()" />
-      <i class="fas fa-user-circle"></i>
+      <input id="fileUpload" type="file" hidden @change="onFileSelected" />
+      <img
+        width="225"
+        :src="user.image || AnonymousUser"
+        @click="chooseFiles()"
+      />
       <h2>Bonjour {{ user.pseudo }}</h2>
       <h3>Voici les informations concernant votre compte</h3>
       <h4>pseudo: {{ user.pseudo }}</h4>
@@ -12,14 +15,18 @@
         placeholder="Changer de pseudo"
         v-model="user.pseudo"
       />
-      <button type="submit" @click="updatePseudo(user.id)">Changer</button>
+      <button type="submit" class="change" @click="updatePseudo(user.id)">
+        Changer
+      </button>
       <h4>email: {{ user.email }}</h4>
       <input
         type="password"
         placeholder="Changer votre mot de passe"
         v-model="password"
       />
-      <button type="submit" @click="updatePassword(user.id)">Changer</button>
+      <button type="submit" class="change" @click="updatePassword(user.id)">
+        Changer
+      </button>
       <h4>
         Création de votre compte le {{ $filters.formatDate(user.createdAt) }}
       </h4>
@@ -54,7 +61,7 @@ export default {
   beforeMount() {
     const Admin = localStorage.getItem("isAdmin");
     this.isAdmin = Admin;
-    this.newUser();
+    this.findUser();
   },
   methods: {
     onFileSelected(event) {
@@ -67,18 +74,20 @@ export default {
         .put("http://localhost:3000/api/auth/" + id + "/set-image", fd, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            authorization: "Bearer " + localStorage.getItem("token"),
           },
         })
-        .then(() => {
-          alert("image modifié");
+        .then((response) => {
+          console.log(response);
+          this.user.image = response.data.image;
+          localStorage.setItem("imageProfil", response.data.image);
         })
         .catch((error) => console.log(error));
     },
     chooseFiles() {
       document.getElementById("fileUpload").click();
     },
-    newUser() {
+    findUser() {
       const id = localStorage.getItem("userId");
       axios
         .get("http://localhost:3000/api/auth/" + id, {
@@ -178,6 +187,10 @@ button {
   color: #fd2d01;
 }
 
+.change {
+  margin-left: 3px;
+}
+
 @media all and (max-width: 642px) {
   .button {
     flex-wrap: wrap-reverse;
@@ -187,6 +200,9 @@ button {
   }
   input {
     width: 50%;
+  }
+  .change {
+    margin-left: 0;
   }
 }
 </style>

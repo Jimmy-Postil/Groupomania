@@ -86,7 +86,7 @@ exports.deleteUser = (req, res, next) => {
 }
 
 
-//Modification de l'utilisateur
+//Modification du pseudo
 exports.updatePseudo = (req, res, next) => {
     const id = req.params.id;
     const pseudo = req.body.pseudo;
@@ -100,6 +100,7 @@ exports.updatePseudo = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 }
 
+//Modification du mot de passe
 exports.updatePassword = (req, res, next) => {
     const id = req.params.id;
     const password = req.body.password;
@@ -116,16 +117,18 @@ exports.updatePassword = (req, res, next) => {
         .catch(error => { console.log(error); return res.status(500).json({ error }) });
 }
 
+//Modification de l'image de profil
 exports.updateImage = (req, res, next) => {
     const id = req.params.id;
-    const image = req.body.image;
+    const postFile = req.body.image;
+    const url = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     User.update(
         {
-            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` 
+            image: postFile !== '' ? url : null
         },
         { where: { id: id } }
     )
-        .then(() => res.status(200).json({ message: 'image modifié !' }))
+        .then(() => res.status(200).json({ image: url }))
         .catch(error => res.status(400).json({ error }));
 }
 

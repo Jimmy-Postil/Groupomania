@@ -3,6 +3,7 @@
     <div class="content" v-for="post in posts" :key="post.userId">
       <div class="headerPost">
         <div class="post">
+          <img :src="post.User.image || AnonymousUser" width="100" />
           <p class="post-pseudo">{{ post.User.pseudo }}</p>
           <p class="post-pseudo--create">
             {{ $filters.formatDate(post.createdAt) }}
@@ -47,6 +48,7 @@
 import ModifyPost from "../components/ModifyPost.vue";
 import CreateCommentaire from "../components/CreateCommentaire.vue";
 import LookCommentaire from "../components/LookCommentaire.vue";
+import AnonymousUser from "../assets/avatar.png";
 import axios from "axios";
 export default {
   name: "LookPost",
@@ -57,6 +59,8 @@ export default {
   },
   data() {
     return {
+      AnonymousUser,
+      image: localStorage.getItem("imageProfil"),
       modalPostId: null,
       posts: [],
       commentaires: [],

@@ -5,6 +5,7 @@
     :key="commentaire.id"
   >
     <div class="flex">
+      <img :src="commentaire.User.image || AnonymousUser" width="50" />
       <p class="flex-pseudo">{{ commentaire.User.pseudo }}</p>
       <p class="flex-pseudo-date">
         le {{ $filters.formatDate(commentaire.createdAt) }}
@@ -39,6 +40,7 @@
 <script>
 import ModifyCommentaire from "../components/ModifyCommentaire.vue";
 import axios from "axios";
+import AnonymousUser from "../assets/avatar.png";
 export default {
   name: "LookCommentaire",
   components: {
@@ -47,6 +49,8 @@ export default {
   props: ["postId", "commentaires"],
   data() {
     return {
+      AnonymousUser,
+      image: localStorage.getItem("imageProfil"),
       modalCommentaireId: null,
       isAdmin: localStorage.getItem("isAdmin"),
       userId: localStorage.getItem("userId"),
