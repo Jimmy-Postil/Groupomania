@@ -228,4 +228,17 @@ export default {
     width: 90%;
   }
 }
+
+@media all and (max-width: 356px) {
+  .column{
+    margin-top: 0px;
+  }
+  .icon{
+    &-delete{
+      &--update{
+        margin-left: 0px;
+      }
+    }
+  }
+}
 </style>>

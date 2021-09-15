@@ -76,4 +76,16 @@ export default {
     }
   }
 }
+
+@media all and (max-width: 768px) {
+  .comment-content{
+    width: 80%;
+  }
+}
+
+@media all and (max-width: 356px) {
+  .comment-content{
+    width: 90%;
+  }
+}
 </style>
