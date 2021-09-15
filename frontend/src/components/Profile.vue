@@ -3,30 +3,36 @@
     <div class="user">
       <input id="fileUpload" type="file" hidden @change="onFileSelected" />
       <img
-        width="225"
+        class="img-profil"
         :src="user.image || AnonymousUser"
         @click="chooseFiles()"
       />
       <h2>Bonjour {{ user.pseudo }}</h2>
       <h3>Voici les informations concernant votre compte</h3>
-      <h4>pseudo: {{ user.pseudo }}</h4>
-      <input
-        type="text"
-        placeholder="Changer de pseudo"
-        v-model="user.pseudo"
-      />
-      <button type="submit" class="change" @click="updatePseudo(user.id)">
-        Changer
-      </button>
       <h4>email: {{ user.email }}</h4>
-      <input
-        type="password"
-        placeholder="Changer votre mot de passe"
-        v-model="password"
-      />
-      <button type="submit" class="change" @click="updatePassword(user.id)">
-        Changer
-      </button>
+      <h4>pseudo: {{ user.pseudo }}</h4>
+      <div class="flex-column">
+        <div class="flex-row">
+          <input
+            type="text"
+            placeholder="Changer de pseudo"
+            v-model="user.pseudo"
+          />
+          <button type="submit" class="change" @click="updatePseudo(user.id)">
+            Changer
+          </button>
+        </div>
+        <div class="flex-row">
+          <input
+            type="password"
+            placeholder="Changer votre mot de passe"
+            v-model="password"
+          />
+          <button type="submit" class="change" @click="updatePassword(user.id)">
+            Changer
+          </button>
+        </div>
+      </div>
       <h4>
         Création de votre compte le {{ $filters.formatDate(user.createdAt) }}
       </h4>
@@ -46,7 +52,7 @@
 
 <script>
 import axios from "axios";
-import AnonymousUser from "../assets/avatar.png";
+import AnonymousUser from "../assets/photo-avatar-profil.png";
 export default {
   name: "Profile",
   data() {
@@ -178,6 +184,7 @@ export default {
 
 input {
   margin-bottom: 10px;
+  width: 40%;
 }
 .button {
   display: flex;
@@ -189,6 +196,17 @@ button {
 
 .change {
   margin-left: 3px;
+}
+
+.img-profil {
+  border-radius: 50%;
+  width: 225px;
+  height: 225px;
+}
+
+.flex-column{
+  display: flex;
+  flex-direction: column;
 }
 
 @media all and (max-width: 642px) {
@@ -203,6 +221,30 @@ button {
   }
   .change {
     margin-left: 0;
+  }
+}
+
+@media all and (max-width: 542px){
+  .img-profil{
+    width: 150px;
+    height: 150px;
+  }
+    input{
+    width: 80%;
+  }
+  input::placeholder{
+    font-size: 0.7rem;
+  }
+  button{
+    margin-bottom: 10px;
+    width: 80%;
+  }
+}
+
+@media all and (max-width: 388px){
+  .img-profil{
+    width: 100px;
+    height: 100px;
   }
 }
 </style>

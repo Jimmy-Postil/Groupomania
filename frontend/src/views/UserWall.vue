@@ -11,7 +11,7 @@
         v-if="!image"
         v-on:click="OpenProfil"
       ></i>
-      <img v-if="image" :src="image" v-on:click="OpenProfil" width="70" />
+      <img class="img-profil" v-if="image" :src="image" v-on:click="OpenProfil" width="70" height="70" />
     </div>
     <div class="separator"></div>
     <CreatePost />
@@ -62,6 +62,11 @@ export default {
 .separator {
   border: 1px solid rgb(168, 168, 168);
   background-color: rgb(168, 168, 168);
+  margin-top: 5px;
+}
+
+.img-profil{
+  border-radius: 50px;
   margin-top: 5px;
 }
 

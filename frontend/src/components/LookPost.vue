@@ -3,11 +3,17 @@
     <div class="content" v-for="post in posts" :key="post.userId">
       <div class="headerPost">
         <div class="post">
-          <img :src="post.User.image || AnonymousUser" width="100" />
-          <p class="post-pseudo">{{ post.User.pseudo }}</p>
-          <p class="post-pseudo--create">
-            {{ $filters.formatDate(post.createdAt) }}
-          </p>
+          <img
+            class="img-profil"
+            :src="post.User.image || AnonymousUser"
+            width="100"
+          />
+          <div class="column">
+            <p class="post-pseudo">{{ post.User.pseudo }}</p>
+            <p class="post-pseudo--create">
+              {{ $filters.formatDate(post.createdAt) }}
+            </p>
+          </div>
         </div>
 
         <div class="icon">
@@ -48,7 +54,7 @@
 import ModifyPost from "../components/ModifyPost.vue";
 import CreateCommentaire from "../components/CreateCommentaire.vue";
 import LookCommentaire from "../components/LookCommentaire.vue";
-import AnonymousUser from "../assets/avatar.png";
+import AnonymousUser from "../assets/photo-avatar-profil.png";
 import axios from "axios";
 export default {
   name: "LookPost",
@@ -167,7 +173,16 @@ export default {
   justify-content: space-between;
 }
 
+.column{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 15px;
+  margin-top: 20px;
+}
 .post {
+  display: flex;
+  margin-bottom: 20px;
   &-pseudo {
     margin-bottom: 0;
     font-style: italic;
@@ -202,6 +217,11 @@ export default {
     height: 500px;
     object-fit: cover;
   }
+}
+
+.img-profil {
+  width: 80px;
+  height: 80px;
 }
 @media all and (max-width: 768px) {
   .content {

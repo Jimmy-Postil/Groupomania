@@ -4,17 +4,26 @@
     v-for="commentaire in commentaires"
     :key="commentaire.id"
   >
-    <div class="flex">
-      <img :src="commentaire.User.image || AnonymousUser" width="50" />
-      <p class="flex-pseudo">{{ commentaire.User.pseudo }}</p>
-      <p class="flex-pseudo-date">
-        le {{ $filters.formatDate(commentaire.createdAt) }}
-      </p>
-    </div>
-    <div class="comment">
-      <p class="comment-content">
-        {{ commentaire.content }}
-      </p>
+    <div class="image">
+      <img
+        class="img-profil"
+        :src="commentaire.User.image || AnonymousUser"
+        width="50"
+        height="50"
+      />
+      <div class="content">
+        <div class="flex">
+          <p class="flex-pseudo">{{ commentaire.User.pseudo }}</p>
+          <p class="flex-pseudo-date">
+            le {{ $filters.formatDate(commentaire.createdAt) }}
+          </p>
+        </div>
+        <div class="comment">
+          <p class="comment-content">
+            {{ commentaire.content }}
+          </p>
+        </div>
+      </div>
       <div class="icon">
         <i
           class="far fa-trash-alt icon-delete"
@@ -40,7 +49,7 @@
 <script>
 import ModifyCommentaire from "../components/ModifyCommentaire.vue";
 import axios from "axios";
-import AnonymousUser from "../assets/avatar.png";
+import AnonymousUser from "../assets/photo-avatar-profil.png";
 export default {
   name: "LookCommentaire",
   components: {
@@ -91,7 +100,8 @@ export default {
 
 <style lang="scss" scoped>
 .icon {
-  margin-top: -15px;
+  margin-top: 10px;
+  margin-left: 20px;
   &-delete {
     font-size: 1.2rem;
     color: red;
@@ -122,8 +132,19 @@ export default {
     }
   }
 }
-.comment {
+
+.content{
+  margin-left: 5px;
+}
+
+.image {
   display: flex;
-  justify-content: space-between;
+}
+
+.img-profil {
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-right: 5px;
+  object-fit: cover;
 }
 </style>
